@@ -1,209 +1,337 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>爱心动画</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <meta name="description" content="浪漫爱心动画，点击生成爱心雨">
-    <meta name="keywords" content="爱心,动画,浪漫,微信">
-    <meta name="author" content="动画制作">
-    <meta property="og:title" content="爱心动画" />
-    <meta property="og:description" content="点击按钮生成浪漫爱心雨，分享给你爱的人" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://picsum.photos/600/315?random=1" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://picsum.photos/180/180?random=2">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        love: '#FF4B91',
-                    },
-                }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>宝贝我爱你</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            love: {
+              primary: '#FF0000', // 红色主色调
+              secondary: '#FF5252',
+              accent: '#FF8A80',
+              light: '#FFEBEE',
+              dark: '#B71C1C',
+              deeper: '#800000'
             }
+          },
+          fontFamily: {
+            love: ['Dancing Script', 'cursive', 'system-ui']
+          },
+          backgroundImage: {
+            'heart-gradient': 'linear-gradient(135deg, #FF0000 0%, #B71C1C 100%)',
+            'heart-gradient-hover': 'linear-gradient(135deg, #B71C1C 0%, #800000 100%)'
+          }
         }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .heart-beat {
-                animation: heartBeat 1.5s ease-in-out infinite;
-            }
-            .heart-float {
-                animation: heartFloat 6s ease-in-out infinite;
-            }
-            .heart-sparkle {
-                animation: heartSparkle 1.5s ease-in-out infinite;
-            }
-        }
-        
-        @keyframes heartBeat {
-            0%, 100% { transform: scale(1); }
-            14% { transform: scale(1.3); }
-            28% { transform: scale(1); }
-            42% { transform: scale(1.3); }
-            70% { transform: scale(1); }
-        }
-        
-        @keyframes heartFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-20px) rotate(5deg); }
-            50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(20px) rotate(-5deg); }
-        }
-        
-        @keyframes heartSparkle {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
-        }
-    </style>
-</head>
-<body class="bg-gradient-to-br from-pink-50 to-purple-50 min-h-screen flex flex-col items-center justify-center p-4 overflow-hidden">
-    <div class="text-center mb-8">
-        <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-gray-800 mb-2">爱心动画效果</h1>
-        <p class="text-gray-600">点击下方按钮生成爱心</p>
-    </div>
-    
-    <div id="heartContainer" class="relative w-full h-[60vh] max-h-[500px] flex items-center justify-center overflow-hidden">
-        <!-- 大爱心 -->
-        <div class="heart-beat text-9xl md:text-[12rem] text-love">
-            <i class="fa fa-heart"></i>
-        </div>
-        
-        <!-- 漂浮的小爱心 -->
-        <div class="absolute top-1/4 left-1/4 text-4xl text-love heart-float opacity-70">
-            <i class="fa fa-heart"></i>
-        </div>
-        <div class="absolute bottom-1/3 right-1/4 text-3xl text-love heart-float opacity-60" style="animation-delay: 0.5s;">
-            <i class="fa fa-heart"></i>
-        </div>
-        <div class="absolute top-1/3 right-1/3 text-5xl text-love heart-float opacity-80" style="animation-delay: 1s;">
-            <i class="fa fa-heart"></i>
-        </div>
-    </div>
-    
-    <button id="createHeartBtn" class="mt-8 bg-love hover:bg-love/90 text-white font-medium py-3 px-8 rounded-full shadow-lg transform transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-love/50">
-        <i class="fa fa-heart mr-2"></i>生成爱心雨
-    </button>
-    
-    <!-- 微信分享提示 -->
-    <div id="wechatShareTips" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <div class="text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="fa fa-weixin text-3xl text-green-500"></i>
-                </div>
-                <h3 class="text-xl font-bold mb-2">分享给好友</h3>
-                <p class="text-gray-600 mb-6">点击右上角菜单，选择"发送给朋友"</p>
-                <button id="closeShareTips" class="bg-gray-200 hover:bg-gray-300 text-gray-700 py-2 px-6 rounded-lg font-medium">
-                    知道了
-                </button>
-            </div>
-        </div>
-    </div>
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .text-shadow-lg {
+        text-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+      }
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+      .animate-beat {
+        animation: beat 1.5s ease-in-out infinite;
+      }
+      .animate-appear {
+        animation: appear 0.5s ease-out forwards;
+      }
+      .animate-fade-in {
+        animation: fadeIn 1.5s ease-out forwards;
+      }
+      .bg-hearts {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='%23FF0000' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 30px 30px;
+        opacity: 0.1;
+      }
+    }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const heartContainer = document.getElementById('heartContainer');
-            const createHeartBtn = document.getElementById('createHeartBtn');
-            const wechatShareTips = document.getElementById('wechatShareTips');
-            const closeShareTips = document.getElementById('closeShareTips');
-            
-            // 检查是否在微信浏览器中
-            function isWechatBrowser() {
-                const ua = navigator.userAgent.toLowerCase();
-                return ua.indexOf('micromessenger') !== -1;
-            }
-            
-            // 如果在微信中，显示分享提示
-            if (isWechatBrowser()) {
-                setTimeout(() => {
-                    wechatShareTips.classList.remove('hidden');
-                }, 3000);
-            }
-            
-            closeShareTips.addEventListener('click', () => {
-                wechatShareTips.classList.add('hidden');
-            });
-            
-            createHeartBtn.addEventListener('click', () => {
-                createHeartBtn.disabled = true;
-                createHeartBtn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>生成中...';
-                
-                // 清除之前的爱心
-                const existingHearts = document.querySelectorAll('.falling-heart');
-                existingHearts.forEach(heart => heart.remove());
-                
-                // 创建更多爱心，增强效果
-                for (let i = 0; i < 50; i++) {
-                    setTimeout(() => {
-                        createFallingHeart();
-                    }, i * 80);
-                }
-                
-                // 恢复按钮状态
-                setTimeout(() => {
-                    createHeartBtn.disabled = false;
-                    createHeartBtn.innerHTML = '<i class="fa fa-heart mr-2"></i>生成爱心雨';
-                    
-                    // 如果在微信中，再次显示分享提示
-                    if (isWechatBrowser()) {
-                        setTimeout(() => {
-                            wechatShareTips.classList.remove('hidden');
-                        }, 2000);
-                    }
-                }, 4000);
-            });
-            
-            function createFallingHeart() {
-                const heart = document.createElement('div');
-                const size = Math.random() * 40 + 15; // 更大范围的尺寸
-                const left = Math.random() * 100; // 0% 到 100%
-                const delay = Math.random() * 3; // 更短的延迟
-                const duration = Math.random() * 6 + 4; // 更长的下落时间
-                const opacity = Math.random() * 0.6 + 0.4; // 透明度范围
-                const colors = ['#FF4B91', '#FF75A0', '#FF85B3', '#FF9BBE', '#FFB6C1']; // 不同的爱心颜色
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                
-                heart.className = 'falling-heart absolute heart-sparkle';
-                heart.innerHTML = '<i class="fa fa-heart"></i>';
-                heart.style.fontSize = `${size}px`;
-                heart.style.left = `${left}%`;
-                heart.style.opacity = opacity;
-                heart.style.color = color;
-                heart.style.animation = `fall ${duration}s linear forwards, sway ${Math.random() * 4 + 2}s ease-in-out alternate infinite`;
-                heart.style.animationDelay = `${delay}s`;
-                
-                heartContainer.appendChild(heart);
-                
-                // 动画结束后移除元素
-                setTimeout(() => {
-                    heart.remove();
-                }, (duration + delay) * 1000);
-            }
-            
-            // 添加飘落和摇摆动画
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes fall {
-                    from { transform: translateY(-50px); }
-                    to { transform: translateY(${heartContainer.clientHeight}px); }
-                }
-                
-                @keyframes sway {
-                    0% { transform: translateX(0) rotate(0deg); }
-                    25% { transform: translateX(-30px) rotate(-5deg); }
-                    50% { transform: translateX(20px) rotate(3deg); }
-                    75% { transform: translateX(-15px) rotate(-2deg); }
-                    100% { transform: translateX(10px) rotate(1deg); }
-                }
-            `;
-            document.head.appendChild(style);
-        });
-    </script>
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(10deg); }
+    }
+    
+    @keyframes beat {
+      0%, 100% { transform: scale(1); }
+      25% { transform: scale(1.2); }
+      40% { transform: scale(0.9); }
+      60% { transform: scale(1.2); }
+    }
+    
+    @keyframes appear {
+      from { 
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes heart-fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0.6;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-love-light to-white overflow-x-hidden">
+  <!-- 背景爱心 -->
+  <div class="fixed inset-0 bg-hearts pointer-events-none opacity-20"></div>
+  
+  <!-- 漂浮爱心装饰 -->
+  <div id="hearts-container" class="fixed inset-0 pointer-events-none"></div>
+  
+  <!-- 爱心雨容器 -->
+  <div id="heart-rain" class="fixed inset-0 pointer-events-none z-0"></div>
+
+  <div class="container mx-auto px-4 py-12 min-h-screen flex flex-col items-center justify-center relative z-10">
+    <!-- 主标题 -->
+    <h1 id="main-title" class="text-[clamp(2.5rem,8vw,5rem)] font-love font-bold text-love-dark text-shadow-lg mb-8 opacity-0 transform translate-y-8">
+      宝贝我爱你
+    </h1>
+    
+    <!-- 心形按钮 - 渐变效果 -->
+    <div id="heart-button" class="w-24 h-24 cursor-pointer animate-beat bg-heart-gradient rounded-full flex items-center justify-center shadow-xl hover:bg-heart-gradient-hover hover:scale-105 transition-all duration-300">
+      <svg viewBox="0 0 24 24" class="w-16 h-16 text-white">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+    </div>
+    
+    <!-- 动态消息容器 -->
+    <div id="message-container" class="mt-12 max-w-2xl w-full text-center">
+      <p id="message" class="text-[clamp(1.2rem,4vw,2rem)] font-love text-love-dark leading-relaxed opacity-0"></p>
+    </div>
+    
+    <!-- 音乐控制 -->
+    <div class="absolute bottom-6 right-6 z-20">
+      <button id="music-toggle" class="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-love-primary hover:bg-love-light transition-all">
+        <i class="fa fa-music text-xl"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 音乐元素 -->
+  <audio id="love-music" loop>
+    <source src="https://music.163.com/song/media/outer/url?id=442247442.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // 主标题动画
+    setTimeout(() => {
+      document.getElementById('main-title').classList.add('animate-appear');
+      document.getElementById('main-title').style.opacity = '1';
+      document.getElementById('main-title').style.transform = 'translateY(0)';
+    }, 500);
+    
+    // 心形按钮点击事件
+    document.getElementById('heart-button').addEventListener('click', showMessages);
+    
+    // 消息数组
+    const messages = [
+      "亲爱的，遇见你是我生命中最美的意外。",
+      "每一天爱你都比昨天更多一点，比明天更少一点。",
+      "你的笑容是我每天醒来的动力，也是我每晚入睡前的慰藉。",
+      "无论风雨还是晴天，我都想牵着你的手一起走过。",
+      "我爱你，不仅是因为你的样子，还因为和你在一起时我的样子。",
+      "我愿意用一生的时间，去书写我们的爱情故事。",
+      "宝贝，我爱你，永远永远。"
+    ];
+    
+    // 显示消息函数
+    function showMessages() {
+      const messageContainer = document.getElementById('message');
+      const heartButton = document.getElementById('heart-button');
+      
+      // 改变按钮样式
+      heartButton.classList.remove('animate-beat');
+      heartButton.classList.add('scale-110');
+      
+      // 播放音乐
+      playMusic();
+      
+      // 创建漂浮爱心
+      createFloatingHearts();
+      
+      // 启动爱心雨
+      startHeartRain();
+      
+      // 显示消息
+      let i = 0;
+      messageContainer.style.opacity = '1';
+      
+      function displayNextMessage() {
+        if (i < messages.length) {
+          messageContainer.textContent = messages[i];
+          messageContainer.classList.remove('animate-appear');
+          void messageContainer.offsetWidth; // 重置动画
+          messageContainer.classList.add('animate-appear');
+          i++;
+          setTimeout(displayNextMessage, 4000);
+        } else {
+          // 所有消息显示完毕后恢复按钮动画
+          heartButton.classList.add('animate-beat');
+          heartButton.classList.remove('scale-110');
+        }
+      }
+      
+      displayNextMessage();
+    }
+    
+    // 播放音乐函数
+    function playMusic() {
+      const music = document.getElementById('love-music');
+      const musicToggle = document.getElementById('music-toggle');
+      
+      if (music.paused) {
+        music.play().catch(e => console.log("无法自动播放音乐:", e));
+        musicToggle.innerHTML = '<i class="fa fa-pause text-xl"></i>';
+      } else {
+        music.pause();
+        musicToggle.innerHTML = '<i class="fa fa-music text-xl"></i>';
+      }
+      
+      // 音乐控制切换
+      musicToggle.onclick = function() {
+        if (music.paused) {
+          music.play();
+          musicToggle.innerHTML = '<i class="fa fa-pause text-xl"></i>';
+        } else {
+          music.pause();
+          musicToggle.innerHTML = '<i class="fa fa-music text-xl"></i>';
+        }
+      };
+    }
+    
+    // 创建漂浮爱心函数
+    function createFloatingHearts() {
+      const container = document.getElementById('hearts-container');
+      
+      // 清空现有爱心
+      container.innerHTML = '';
+      
+      // 创建新爱心
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        const size = Math.random() * 30 + 10;
+        const left = Math.random() * 100;
+        const delay = Math.random() * 5;
+        const duration = Math.random() * 10 + 10;
+        
+        heart.innerHTML = '<i class="fa fa-heart"></i>';
+        heart.className = 'absolute text-love-primary';
+        heart.style.fontSize = `${size}px`;
+        heart.style.left = `${left}%`;
+        heart.style.bottom = '-50px';
+        heart.style.opacity = '0';
+        heart.style.position = 'absolute';
+        heart.style.transition = 'all 0.1s linear';
+        heart.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+        
+        container.appendChild(heart);
+        
+        // 随机颜色 (保持红色系)
+        const colors = ['#FF0000', '#E53935', '#D32F2F', '#B71C1C', '#EF5350'];
+        heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+        
+        // 随机动画
+        setTimeout(() => {
+          heart.style.opacity = '0.8';
+          heart.style.bottom = '100vh';
+          heart.style.transform = `translateX(${Math.random() * 100 - 50}px) rotate(${Math.random() * 360}deg)`;
+        }, 10);
+      }
+    }
+    
+    // 爱心雨函数
+    function startHeartRain() {
+      const container = document.getElementById('heart-rain');
+      container.innerHTML = ''; // 清空现有爱心雨
+      
+      // 创建大量爱心
+      const heartCount = 50;
+      for (let i = 0; i < heartCount; i++) {
+        setTimeout(() => {
+          createHeart();
+        }, i * 100);
+      }
+      
+      // 持续创建爱心
+      const interval = setInterval(createHeart, 200);
+      
+      // 30秒后停止创建新爱心
+      setTimeout(() => {
+        clearInterval(interval);
+      }, 30000);
+    }
+    
+    function createHeart() {
+      const container = document.getElementById('heart-rain');
+      const heart = document.createElement('div');
+      
+      // 随机大小
+      const size = Math.random() * 30 + 15;
+      
+      // 随机位置
+      const left = Math.random() * 100;
+      
+      // 随机下落时间
+      const duration = Math.random() * 5 + 3;
+      
+      // 随机透明度
+      const opacity = Math.random() * 0.5 + 0.3;
+      
+      heart.innerHTML = '<i class="fa fa-heart"></i>';
+      heart.className = 'absolute';
+      heart.style.fontSize = `${size}px`;
+      heart.style.left = `${left}%`;
+      heart.style.top = '-50px';
+      heart.style.opacity = opacity;
+      heart.style.color = '#FF0000'; // 确保爱心是红色
+      heart.style.animation = `heart-fall ${duration}s linear forwards`;
+      
+      container.appendChild(heart);
+      
+      // 动画结束后移除元素
+      setTimeout(() => {
+        if (heart.parentNode === container) {
+          container.removeChild(heart);
+        }
+      }, duration * 1000);
+    }
+    
+    // 窗口加载时创建一些初始爱心
+    window.addEventListener('load', () => {
+      for (let i = 0; i < 10; i++) {
+        setTimeout(createFloatingHearts, i * 1000);
+      }
+    });
+  </script>
 </body>
 </html>
     
